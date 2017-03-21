@@ -23,6 +23,9 @@ while(<LIST>) {
 	my $tree = HTML::TreeBuilder::XPath->new_from_url($url);
 
 	my $nodes = $tree->findnodes('//div[@class="article--full__content"]/p/span');
+	if($nodes->size() == 0) {
+		$nodes = $tree->findnodes('//div[@class="article--full__content"]/p');
+	}
 	for my $n ($nodes->string_values()) {
 		print OUT "$n\n";
 	}
