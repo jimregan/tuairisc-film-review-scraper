@@ -8,16 +8,23 @@ use URI;
 use HTML::TreeBuilder::XPath;
 use Data::Dumper;
 binmode(STDOUT, ":utf8");
+open(LIST, "<tuairisc-film-review-uris.txt");
 
-my $url = 'http://tuairisc.ie/deantar-an-kong-e-fein-a-shamhlu-go-snasta-ce-nach-gcuirtear-fe-dhraiocht-sinn/';
+while(<LIST>) {
+	chomp;
+	my $url = $_;
+	s/\/$//;
+	s!http://tuairisc.ie/!!;
+	my $filename = $_;
+	$filename .= '.txt';
+	open(OUT, ">", $filename);
+	binmode(OUT, ":utf8");
+	
+	my $tree = HTML::TreeBuilder::XPath->new_from_url($url);
 
-my $tree = HTML::TreeBuilder::XPath->new_from_url($url);
-#my $p = $tree->findnodes('//div[@class="article--full__content"]/p');
-
-my $nodes = $tree->findnodes('//div[@class="article--full__content"]/p/span');
-for my $n ($nodes->string_values()) {
-	print "$n\n";
+	my $nodes = $tree->findnodes('//div[@class="article--full__content"]/p/span');
+	for my $n ($nodes->string_values()) {
+		print OUT "$n\n";
+	}
 }
 
-
-#print Dumper $nodes[0];
