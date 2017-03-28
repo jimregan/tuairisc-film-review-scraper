@@ -47,7 +47,7 @@ if($ARGV[0] && $ARGV[0] ne '') {
 }
 
 my $articles = scraper {
-	process '//ul[contains(@class, "news-list")]', 'articles[]' => scraper {
+	process '//div[contains(@class, "news-item-wrap")]', 'articles[]' => scraper {
 		process '//h4[contains(@class, "news-item-title")', 'title' => 'TEXT';
 		process '//p[contains(@class, "news-item-desc")', 'desc' => 'TEXT';
 	};
